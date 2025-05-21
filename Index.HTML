@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Case Summary Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
+    textarea, pre { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 10px; font-size: 14px; }
+    button { padding: 10px 20px; margin-top: 15px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    h2 { margin-top: 30px; }
+    .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>CRM Interaction to Summary Converter</h1>
+  <label for="crmInput">Paste Raw CRM Interaction:</label>
+  <textarea id="crmInput" rows="12" placeholder="Paste your CRM log here..."></textarea>
+  <button onclick="generateSummary()">Generate Summary</button>
+
+  <h2>Formatted Summary:</h2>
+  <pre id="output"></pre>
+</div>
+
+<script>
+function generateSummary() {
+  const input = document.getElementById('crmInput').value;
+  const output = document.getElementById('output');
+
+  // Simple logic to extract keywords (replace with real AI/NLP later)
+  const caseTime = input.match(/\d{1,2}:\d{2}PM/gi)?.[0] || 'Unknown Time';
+  const breakdown = input.match(/Breakdown location updated as (.*?)\n/i)?.[1] || 'Unknown Location';
+  const towingTime = input.match(/towed at (.*?) PM/i)?.[1] || 'Unknown';
+  const issue = input.match(/Subject: (.*?)\n/i)?.[1] || 'Unknown Issue';
+  const delayNotes = input.includes('no entry') ? 'Due to no entry restrictions' : 'Minor delay due to case handling';
+
+  const summary = `Case Details:
+
+- On ${new Date().toLocaleDateString()} at ${caseTime}, customer called regarding "${issue}".
+- Breakdown location: ${breakdown}.
+- ${delayNotes}, towing arranged accordingly.
+- Vehicle was towed at around ${towingTime} PM.
+
+Outcome:
+
+- Towing successfully arranged and completed.
+- Customer communication noted and handled as per protocol.
+
+Call with Customer:
+
+- Apology offered for any delays.
+- Customer accepted explanation and support.
+
+Way Forward:
+
+- Strengthen communication about time restrictions (e.g., no-entry zones) during initial customer contact.
+- Provide proactive updates to customers awaiting service to prevent escalations.
+- Train agents to offer alternate solutions like custody or cab with better clarity.
+- Explore automation options for faster service dispatch and tracking.`;
+
+  output.textContent = summary;
+}
+</script>
+</body>
+</html>
